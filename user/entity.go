@@ -11,5 +11,5 @@ type User struct {
 	PasswordHash string
 	Phone        string
 	Address      string
-	RoleId       uint
+	Role         string
 }

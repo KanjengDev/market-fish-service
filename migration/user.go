@@ -9,7 +9,7 @@ type Users struct {
 	Phone        string `gorm:"default:null"`
 	PasswordHash string `gorm:"default:null"`
 	Address      string `gorm:"default:null"`
-	RoleId       uint   `gorm:"not null"`
+	Role         string `gorm:"default:null"`
 	Token        string `gorm:"default:null"`
 }
 

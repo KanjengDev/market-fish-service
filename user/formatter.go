@@ -5,9 +5,9 @@ type UserFormatter struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
 	Address  string `json:"address"`
-	RoleId   uint   `json:"role_id"`
+	Role     string `json:"role"`
 	Token    string `json:"token"`
-	Phone    string `json:"image_url"`
+	Phone    string `json:"phone"`
 }
 
 func FormatUser(user User, token string) UserFormatter {
@@ -17,7 +17,7 @@ func FormatUser(user User, token string) UserFormatter {
 		Username: user.Username,
 		Address:  user.Address,
 		Phone:    user.Phone,
-		RoleId:   user.RoleId,
+		Role:     user.Role,
 		Token:    token,
 	}
 

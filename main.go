@@ -4,9 +4,14 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"market-fish-service/auth"
+	"market-fish-service/handler"
 	"market-fish-service/migration"
+	"market-fish-service/user"
 	"os"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -41,5 +46,22 @@ func main() {
 		migration.AutoMigrate(db)
 		fmt.Println("All table recreated successfully ...")
 	}
+
+	userRepository := user.NewRepository(db)
+
+	authService := auth.NewService()
+	userService := user.NewService(userRepository)
+
+	userHandler := handler.NewUserHandler(userService, authService)
+
+	router := gin.Default()
+	router.Use(cors.Default())
+	router.Static("/images", "./images")
+	api := router.Group("/api/v1")
+
+	api.POST("/register", userHandler.RegisterUser)
+	api.POST("/login", userHandler.Login)
+
+	router.Run()
 
 }

@@ -6,7 +6,7 @@ type RegisterUserInput struct {
 	Password string `json:"password" binding:"required"`
 	Phone    string `json:"phone"`
 	Address  string `json:"address"`
-	RoleId   uint   `json:"role_id" binding:"required"`
+	Role     string `json:"role" binding:"required"`
 }
 
 type LoginInput struct {
