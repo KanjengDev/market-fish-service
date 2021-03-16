@@ -22,3 +22,18 @@ func FormatInventoryDetail(inventory Inventory) InventoryFormatter {
 
 	return inventoryDetailFormatter
 }
+
+func FormatInventory(inventory []Inventory) []InventoryFormatter {
+	if len(inventory) == 0 {
+		return []InventoryFormatter{}
+	}
+
+	var campaignsFormatter []InventoryFormatter
+
+	for _, campaign := range inventory {
+		campaignFormatter := FormatInventoryDetail(campaign)
+		campaignsFormatter = append(campaignsFormatter, campaignFormatter)
+	}
+
+	return campaignsFormatter
+}

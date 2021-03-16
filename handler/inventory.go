@@ -6,6 +6,7 @@ import (
 	"market-fish-service/inventory"
 	"market-fish-service/user"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,4 +57,18 @@ func (h *inventoryHandler) CreateCampaign(c *gin.Context) {
 	response := helper.APIResponse("Success to create item", http.StatusOK, "success", inventory.FormatInventoryDetail(newItem))
 	c.JSON(http.StatusOK, response)
 
+}
+
+func (h *inventoryHandler) GetInventory(c *gin.Context) {
+	userID, _ := strconv.Atoi(c.Query("user_id"))
+
+	items, err := h.service.GetItems(uint(userID))
+
+	if err != nil {
+		response := helper.APIResponse("Error to get items", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	response := helper.APIResponse("List of items", http.StatusOK, "success", inventory.FormatInventory(items))
+	c.JSON(http.StatusOK, response)
 }

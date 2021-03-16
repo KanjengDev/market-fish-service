@@ -69,6 +69,7 @@ func main() {
 
 	api.POST("/register", userHandler.RegisterUser)
 	api.POST("/login", userHandler.Login)
+	api.GET("/inventory", inventoryHandler.GetInventory)
 
 	api.POST("/inventory", authMiddleware(authService, userService), inventoryHandler.CreateCampaign)
 
