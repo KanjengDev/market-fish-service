@@ -21,6 +21,7 @@ func AutoMigrate(database *gorm.DB) {
 	// AutoMigrate
 	database.AutoMigrate(
 		Users{},
+		Inventory{},
 	)
 
 }

@@ -40,7 +40,7 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	token, err := h.authService.GenerateToken(int(newUser.ID))
+	token, err := h.authService.GenerateToken(newUser.ID)
 	fmt.Printf("token ===> %#v", token)
 	if err != nil {
 		response := helper.APIResponse("Register account failed", http.StatusBadRequest, "error", nil)
@@ -76,7 +76,7 @@ func (h *userHandler) Login(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
-	token, err := h.authService.GenerateToken(int(loggedinUser.ID))
+	token, err := h.authService.GenerateToken(loggedinUser.ID)
 
 	if err != nil {
 		response := helper.APIResponse("Login failed", http.StatusBadRequest, "error", nil)
