@@ -4,6 +4,10 @@ import (
 	"market-fish-service/user"
 )
 
+type GetItemDetailInput struct {
+	ID uint `uri:"id" binding:"required"`
+}
+
 type ItemInput struct {
 	Name        string `form:"name" `
 	Price       int64  `form:"price" binding:"required"`

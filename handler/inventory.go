@@ -6,7 +6,6 @@ import (
 	"market-fish-service/inventory"
 	"market-fish-service/user"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -60,9 +59,9 @@ func (h *inventoryHandler) CreateCampaign(c *gin.Context) {
 }
 
 func (h *inventoryHandler) GetInventory(c *gin.Context) {
-	userID, _ := strconv.Atoi(c.Query("user_id"))
+	// userID, _ := strconv.Atoi(c.Query("user_id"))
 
-	items, err := h.service.GetItems(uint(userID))
+	items, err := h.service.GetItems()
 
 	if err != nil {
 		response := helper.APIResponse("Error to get items", http.StatusBadRequest, "error", nil)
@@ -70,5 +69,26 @@ func (h *inventoryHandler) GetInventory(c *gin.Context) {
 		return
 	}
 	response := helper.APIResponse("List of items", http.StatusOK, "success", inventory.FormatInventory(items))
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *inventoryHandler) GetInventoryByID(c *gin.Context) {
+	var input inventory.GetItemDetailInput
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of items", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	inventoryDetails, err := h.service.GetItemByID(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of items", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Items", http.StatusOK, "success", inventory.FormatInventoryById(inventoryDetails))
 	c.JSON(http.StatusOK, response)
 }

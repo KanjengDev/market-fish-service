@@ -2,7 +2,8 @@ package inventory
 
 type Service interface {
 	CreateItem(input ItemInput, fileLocation string) (Inventory, error)
-	GetItems(userID uint) ([]Inventory, error)
+	GetItems() ([]Inventory, error)
+	GetItemByID(input GetItemDetailInput) (Inventory, error)
 }
 
 type service struct {
@@ -30,16 +31,17 @@ func (s *service) CreateItem(input ItemInput, fileLocation string) (Inventory, e
 	return newItem, nil
 }
 
-func (s *service) GetItems(userID uint) ([]Inventory, error) {
-	// if userID != 0 {
-	// 	items, err := s.repository.FindByUserID(userID)
-	// 	if err != nil {
-	// 		return items, err
-	// 	}
-
-	// 	return items, nil
-	// }
+func (s *service) GetItems() ([]Inventory, error) {
 	items, err := s.repository.FindAll()
+	if err != nil {
+		return items, err
+	}
+
+	return items, nil
+}
+
+func (s *service) GetItemByID(input GetItemDetailInput) (Inventory, error) {
+	items, err := s.repository.FindByID(input.ID)
 	if err != nil {
 		return items, err
 	}
