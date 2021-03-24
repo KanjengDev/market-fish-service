@@ -22,7 +22,7 @@ func NewUserHandler(userService user.Service, authService auth.Service) *userHan
 func (h *userHandler) RegisterUser(c *gin.Context) {
 	var input user.RegisterUserInput
 
-	err := c.ShouldBindJSON(&input)
+	err := c.ShouldBind(&input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 
@@ -58,7 +58,7 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 func (h *userHandler) Login(c *gin.Context) {
 	var input user.LoginInput
 
-	err := c.ShouldBindJSON(&input)
+	err := c.ShouldBind(&input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 		errorMessage := gin.H{"errors": errors}
