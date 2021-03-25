@@ -34,6 +34,14 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
+	isUserAvailable, _ := h.userService.IsUserNameExist(input)
+	if !isUserAvailable {
+		errorMessage := gin.H{"errors": "Server Error"}
+		response := helper.APIResponse("User is Avaible registered failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
 	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
 		response := helper.APIResponse("Register account failed", http.StatusBadRequest, "error", nil)
