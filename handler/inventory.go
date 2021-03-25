@@ -36,6 +36,7 @@ func (h *inventoryHandler) CreateCampaign(c *gin.Context) {
 	}
 
 	file, err := c.FormFile("file")
+
 	if err != nil {
 		data := gin.H{"is_uploaded": false}
 		response := helper.APIResponse("Failed to upload item image", http.StatusBadRequest, "error", data)
@@ -46,6 +47,7 @@ func (h *inventoryHandler) CreateCampaign(c *gin.Context) {
 
 	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
 
+	err = c.SaveUploadedFile(file, path)
 	newItem, err := h.service.CreateItem(input, path)
 	if err != nil {
 		response := helper.APIResponse("Failed to create  item", http.StatusBadRequest, "error", nil)
