@@ -98,3 +98,18 @@ func (h *userHandler) Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *userHandler) GetUserDetails(c *gin.Context) {
+	currentUser := c.MustGet("currentUser").(user.User)
+	userReq, err := h.userService.GetUserByID(currentUser.ID)
+
+	if err != nil {
+		response := helper.APIResponse("Error to get user", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	formatter := user.FormatUser(userReq, " ")
+	response := helper.APIResponse("User", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
+}

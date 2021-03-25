@@ -70,6 +70,8 @@ func (s *service) GetUserByID(ID uint) (User, error) {
 		return user, err
 	}
 
+	user.PasswordHash = ""
+
 	if user.ID == 0 {
 		return user, errors.New("No user found on with that ID")
 	}
