@@ -23,6 +23,7 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	var input user.RegisterUserInput
 
 	err := c.ShouldBind(&input)
+
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 
