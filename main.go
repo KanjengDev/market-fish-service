@@ -70,6 +70,8 @@ func main() {
 	api.POST("/register", userHandler.RegisterUser)
 	api.POST("/login", userHandler.Login)
 	api.GET("/user", authMiddleware(authService, userService), userHandler.GetUserDetails)
+	api.PUT("/user", authMiddleware(authService, userService), userHandler.UpdateUser)
+
 	api.GET("/inventory", inventoryHandler.GetInventory)
 	api.GET("/inventory/:id", inventoryHandler.GetInventoryByID)
 

@@ -45,7 +45,7 @@ func (h *inventoryHandler) CreateCampaign(c *gin.Context) {
 		return
 	}
 
-	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+	path := fmt.Sprintf("http://178.128.108.162:8080/images/%d-%s", userID, file.Filename)
 
 	err = c.SaveUploadedFile(file, path)
 	newItem, err := h.service.CreateItem(input, path)

@@ -113,3 +113,34 @@ func (h *userHandler) GetUserDetails(c *gin.Context) {
 	response := helper.APIResponse("User", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *userHandler) UpdateUser(c *gin.Context) {
+	var input user.UpdateUserInput
+	err := c.ShouldBind(&input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Failed to update User", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(user.User)
+
+	input.ID = currentUser.ID
+
+	updatedUser, err := h.userService.UpdateUser(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to update  user", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	formatter := user.FormatUser(updatedUser, "")
+
+	response := helper.APIResponse("Account has been update", http.StatusOK, "success", formatter)
+
+	c.JSON(http.StatusOK, response)
+
+}

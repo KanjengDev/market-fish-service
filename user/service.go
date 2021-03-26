@@ -11,6 +11,7 @@ type Service interface {
 	Login(input LoginInput) (User, error)
 	GetUserByID(ID uint) (User, error)
 	IsUserNameExist(input RegisterUserInput) (bool, error)
+	UpdateUser(input UpdateUserInput) (User, error)
 }
 
 type service struct {
@@ -92,4 +93,28 @@ func (s *service) IsUserNameExist(input RegisterUserInput) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func (s *service) UpdateUser(input UpdateUserInput) (User, error) {
+	userID := input.ID
+
+	user, err := s.repository.FindByID(userID)
+	if err != nil {
+		return user, err
+	}
+
+	if userID != userID {
+		return user, nil
+	}
+
+	user.Name = input.Name
+	user.Address = input.Address
+	user.Phone = input.Phone
+
+	updateUser, err := s.repository.Update(user)
+	if err != nil {
+		return updateUser, err
+	}
+
+	return updateUser, nil
 }
